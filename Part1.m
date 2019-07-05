@@ -1,7 +1,20 @@
-function [ eigenVals, eigenVecs, maxAlpha, h1, h2, x1, x2, R ] = Part1( v, m1, m2 )
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INPUTS
+%   v : raw noise signal
+%   m1 : the attenuated noise path signal for parts (a) - (e)
+%   m2 : the attenuated noise path for part (f)
+%
+% OUTPUTS
+%   eigenVals : eigen values of the Hessian matrix
+%   eigenVecs : eigen vectors of the Hessian matrix
+%   maxAlpha : calculated maximum stable learning rate (from eigenVals)
+%   h1 : input/target cross-correlation vector using m1
+%   h2 : input/target cross-correlation vector using m2
+%   x1 : minimum point using m1
+%   x2 : minimum point using m2
+%   R : input correlation matrix 
 
+function [ eigenVals, eigenVecs, maxAlpha, h1, h2, x1, x2, R ] = Part1( v, m1, m2 )
     numDelays = 1;
     z1 = zeros(numDelays, 1);
     z2 = zeros(numDelays, 1);

@@ -1,37 +1,35 @@
 % Least-Mean-Squared Algorithm
 %   INPUTS
-%     a  -  learning rate
-%     s  -  desired signal
-%     v  -  noise
+%     alph  -  learning rate
+%     s  -  original input signal
+%     v  -  raw noise signal
 %     m  -  noise path
-%     i  -  epochs, iterations, or seconds
+%     i  -  epochs/iterations
 %     d  -  adaptive filter delays
 %   OUTPUTS
 %     X  -  evolution of the weight matrix
 %     r  -  reconstructed signal
-%     e  -  original signal minus restored signal
+%     e  -  original signal minus restored signal (error signal)
 %     t  -  corrupted signal, for optional playback
 % Other Notes:
-% z(j) contains each v(k) sample at a time k for a sample j..
-%   "For each unit of time, take delays+1 samples of v(k)"
-%   (where samples is the number of delays - 1)
 % X(j, k) replaces X(i), Y(i) in the project hint
-%   This is used to plot how W changes per iteration of time,
-%   for each sample's weight.
+%   This is used to plot how W changes per iteration of time
 function [ X, r, e, t ] = LMSalg( alph, s, v, m, i, d )
 
     % Initialization of the LMS Algorithm:
     
-    samples = d + 1;
+    samples = d + 1;    % where samples is the total number of inputs resulting from d-delays
+                            % e.g. d = 1 delay results in 2 inputs to the network, v(k) and v(k-1)    
+    W = zeros(1, samples);  % each input introduces a column to W
     
-    W = zeros(1, samples);
-    %W = [0 -2];
-    z = zeros(1, samples);  % samples of v
-    X = zeros(i, samples);
+    %W = [0 -2];    % this weight used to draw "pretty" plots of W against the contour
+    
+    z = zeros(1, samples);  % samples/delay inputs of v
+    X = zeros(i, samples);  % X tracks the value of W over all iterations
     a = zeros(1, i);        % filter output
-    e = zeros(1, i);
-    r = zeros(1, i);
-    t = zeros(1, i);
+    e = zeros(1, i);        % error signal
+    r = zeros(1, i);        % restored signal
+    t = zeros(1, i);        % corrupted signal
     
     % where k is each epoch / unit of time..
     for k = 1:i     
